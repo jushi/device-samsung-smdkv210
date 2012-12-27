@@ -51,7 +51,7 @@ __BEGIN_DECLS
 #define RANGE_A                     (21)
 #define CONVERT_A                   (GRAVITY_EARTH / RANGE_A)
 #define CONVERT_A_X                 (CONVERT_A)
-#define CONVERT_A_Y                 (CONVERT_A)
+#define CONVERT_A_Y                 (-CONVERT_A)
 #define CONVERT_A_Z                 (CONVERT_A)
 
 /*****************************************************************************/

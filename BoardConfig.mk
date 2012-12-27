@@ -63,6 +63,7 @@ WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ar6000.ko"
 WIFI_DRIVER_MODULE_NAME     := "ar6000"
 WIFI_DRIVER_MODULE_ARG      := ""
 WIFI_DRIVER_LOADER_DELAY    := 3000000
+BOARD_WLAN_ATHEROS_SDK      := device/samsung/smdkv210/ar6ksdk/AR6kSDK.2.2.1.151
 
 # Misc. (currently appear to be unused)
 DEFAULT_FB_NUM := 2
