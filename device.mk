@@ -18,8 +18,6 @@
 # that are specific to this hardware: i.e. those are device-specific
 # drivers, configuration files, settings, etc...
 
-PRODUCT_CHARACTERISTICS := tablet
-
 # Screen size is "large", density is "mdpi"
 PRODUCT_AAPT_CONFIG := large mdpi
 
@@ -27,6 +25,10 @@ PRODUCT_AAPT_CONFIG := large mdpi
 # of hardware-specific resource overrides, typically the frameworks and
 # application settings that are stored in resourced.
 DEVICE_PACKAGE_OVERLAYS := device/samsung/smdkv210/overlay
+
+# Bootanimation
+TARGET_SCREEN_WIDTH := 800
+TARGET_SCREEN_HEIGHT := 480
 
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
@@ -125,21 +127,6 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
 	packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml
 
-# These are the OpenMAX IL configuration files
-PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/secomxregistry:system/etc/secomxregistry \
-	device/samsung/smdkv210/media_profiles.xml:system/etc/media_profiles.xml \
-	device/samsung/smdkv210/media_codecs.xml:system/etc/media_codecs.xml
-
-# These are the OpenMAX IL modules
-PRODUCT_PACKAGES += \
-	libSEC_OMX_Core \
-	libOMX.SEC.AVC.Decoder \
-	libOMX.SEC.M4V.Decoder \
-	libOMX.SEC.M4V.Encoder \
-	libOMX.SEC.AVC.Encoder
-
-
 # Filesystem management tools
 PRODUCT_PACKAGES += \
 	e2fsck \
@@ -167,37 +154,58 @@ PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/proprietary/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
 	device/samsung/smdkv210/proprietary/vendor/lib/hw/gralloc.s5pc110.so:system/vendor/lib/hw/gralloc.s5pc110.so
 
+# Lights
+PRODUCT_PACKAGES += \
+	lights.smdkv210
+
 # Audio
 PRODUCT_PACKAGES += \
-	audio.primary.smdkv210 \
-	audio_policy.smdkv210 \
 	audio.a2dp.default \
-	audio.usb.default
+	audio.usb.default \
+	audio.primary.smdkv210 \
+	audio_policy.smdkv210
 
 PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/libaudio/audio_policy.conf:system/etc/audio_policy.conf
 
 # Camera
 PRODUCT_PACKAGES += \
-	libs3cjpeg \
-	camera.smdkv210
+	camera.smdkv210 \
+	libs3cjpeg
 
 # GPS config
 PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/gps.xml:system/vendor/etc/gps.xml \
 	device/samsung/smdkv210/gps.conf:system/etc/gps.conf
 
+# These are the OpenMAX IL configuration files
+PRODUCT_COPY_FILES += \
+	device/samsung/smdkv210/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry \
+	device/samsung/smdkv210/media_profiles.xml:system/etc/media_profiles.xml \
+	device/samsung/smdkv210/media_codecs.xml:system/etc/media_codecs.xml
+
+# These are the OpenMAX IL modules
+PRODUCT_PACKAGES += \
+	libSEC_OMX_Core \
+	libOMX.SEC.AVC.Decoder \
+	libOMX.SEC.M4V.Decoder \
+	libOMX.SEC.M4V.Encoder \
+	libOMX.SEC.AVC.Encoder
+
+
 # Libs
 PRODUCT_PACKAGES += \
 	libcamera \
-	libstagefrighthw \
+	hwcomposer.smdkv210 \
+	libstagefrighthw
+
+# Usb accessory
+PRODUCT_PACKAGES += \
 	com.android.future.usb.accessory
 
 # Misc other modules
 PRODUCT_PACKAGES += \
-	lights.s5pc110 \
-	hwcomposer.s5pc110 \
-	sensors.smdkv210 
+	sensors.smdkv210
 
 # Preinstalled utility app(s).
 PRODUCT_PACKAGES += \
@@ -313,13 +321,33 @@ PRODUCT_COPY_FILES += \
     device/samsung/smdkv210/proprietary/bin/ntfsfix:system/bin/ntfsfix \
     device/samsung/smdkv210/proprietary/bin/mkntfs:system/bin/mkntfs
 
-# Dalvik heap limits.
-include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
+# enable Google-specific location features,
+# like NetworkLocationProvider and LocationCollector
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.com.google.locationfeatures=1 \
+	ro.com.google.networklocation=1
+
+# Extended JNI checks
+# The extended JNI checks will cause the system to run more slowly, but they can spot a variety of nasty bugs 
+# before they have a chance to cause problems.
+# Default=true for development builds, set by android buildsystem.
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.kernel.android.checkjni=0 \
+	dalvik.vm.checkjni=false
+
+# Override /proc/sys/vm/dirty_ratio on UMS
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.vold.umsdirtyratio=20
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
+
+# Dalvik heap limits.
+include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mass_storage
 
+# Set product characteristic to tablet, needed for some ui elements
+PRODUCT_CHARACTERISTICS := tablet

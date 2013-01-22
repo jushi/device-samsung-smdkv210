@@ -3,4 +3,5 @@
 #
 rild.libpath=/vendor/lib/libreference-ril.so
 rild.libargs=-d /dev/ttyS0
+keyguard.no_require_sim=1
 ro.sf.lcd_density=120

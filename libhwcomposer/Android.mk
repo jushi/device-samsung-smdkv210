@@ -29,7 +29,11 @@ LOCAL_C_INCLUDES := \
 
 LOCAL_SRC_FILES := SecHWCUtils.cpp SecHWC.cpp
 
-LOCAL_MODULE := hwcomposer.$(TARGET_BOARD_PLATFORM)
+ifeq ($(BOARD_CUSTOM_VSYNC_IOCTL),true)
+    LOCAL_CFLAGS += -DVSYNC_IOCTL
+endif
+
+LOCAL_MODULE := hwcomposer.smdkv210
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 

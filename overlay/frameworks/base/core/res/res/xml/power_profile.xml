@@ -55,4 +55,9 @@
       <value>205.4</value>
       <value>259.0</value>
   </array>
+  <!-- This is the battery capacity in mAh -->
+  <item name="battery.capacity">2250</item>
+      <!--
+      Battery capacity is 2250 mAH (at 9.0 Volts)
+      -->
 </device>

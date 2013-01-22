@@ -1,6 +1,7 @@
 /*
  * Copyright 2008, The Android Open Source Project
  * Copyright 2010, Samsung Electronics Co. LTD
+ * Copyright 2011, The CyanogenMod Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +40,7 @@ using namespace android;
 
 #define CHECK(return_value)                                          \
     if (return_value < 0) {                                          \
-        ALOGE("%s::%d fail. errno: %s, m_camera_id = %d\n",          \
+        ALOGE("%s::%d fail. errno: %s, m_camera_id = %d\n",           \
              __func__, __LINE__, strerror(errno), m_camera_id);      \
         return -1;                                                   \
     }
@@ -47,7 +48,7 @@ using namespace android;
 
 #define CHECK_PTR(return_value)                                      \
     if (return_value < 0) {                                          \
-        ALOGE("%s::%d fail, errno: %s, m_camera_id = %d\n",          \
+        ALOGE("%s::%d fail, errno: %s, m_camera_id = %d\n",           \
              __func__,__LINE__, strerror(errno), m_camera_id);       \
         return NULL;                                                 \
     }
@@ -523,18 +524,27 @@ SecCamera::SecCamera() :
             m_snapshot_max_height (MAX_FRONT_CAMERA_SNAPSHOT_HEIGHT),
             m_angle(-1),
             m_anti_banding(-1),
+            m_wdr(-1),
+            m_anti_shake(-1),
             m_zoom_level(-1),
             m_object_tracking(-1),
             m_smart_auto(-1),
+            m_beauty_shot(-1),
+            m_vintage_mode(-1),
             m_face_detect(-1),
             m_gps_enabled(false),
             m_gps_latitude(-1),
             m_gps_longitude(-1),
             m_gps_altitude(-1),
             m_gps_timestamp(-1),
+            m_vtmode(0),
             m_sensor_mode(-1),
             m_shot_mode(-1),
             m_exif_orientation(-1),
+            m_blur_level(-1),
+            m_chk_dataline(-1),
+            m_video_gamma(-1),
+            m_slow_ae(-1),
             m_camera_af_flag(-1),
             m_flag_camera_start(0),
             m_jpeg_thumbnail_width (0),
@@ -707,6 +717,16 @@ int SecCamera::startPreview(void)
     ALOGV("%s : m_preview_width: %d m_preview_height: %d m_angle: %d\n",
             __func__, m_preview_width, m_preview_height, m_angle);
 
+    ret = fimc_v4l2_s_ctrl(m_cam_fd,
+                           V4L2_CID_CAMERA_CHECK_DATALINE, m_chk_dataline);
+    CHECK(ret);
+
+    if (m_camera_id == CAMERA_ID_FRONT) {
+        /* VT mode setting */
+        ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_VT_MODE, m_vtmode);
+        CHECK(ret);
+    }
+
     /* start with all buffers in queue */
     for (int i = 0; i < MAX_BUFFERS; i++) {
         ret = fimc_v4l2_qbuf(m_cam_fd, i);
@@ -720,6 +740,14 @@ int SecCamera::startPreview(void)
 
     ret = fimc_v4l2_s_parm(m_cam_fd, &m_streamparm);
     CHECK(ret);
+
+    if (m_camera_id == CAMERA_ID_FRONT) {
+        /* Blur setting */
+        ALOGV("m_blur_level = %d", m_blur_level);
+        ret = fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_VGA_BLUR,
+                               m_blur_level);
+        CHECK(ret);
+    }
 
     // It is a delay for a new frame, not to show the previous bigger ugly picture frame.
     ret = fimc_poll(&m_events_c);
@@ -1943,6 +1971,64 @@ int SecCamera::getSharpness(void)
 
 //======================================================================
 
+int SecCamera::setWDR(int wdr_value)
+{
+    ALOGV("%s(wdr_value(%d))", __func__, wdr_value);
+
+    if (wdr_value < WDR_OFF || WDR_MAX <= wdr_value) {
+        ALOGE("ERR(%s):Invalid wdr_value (%d)", __func__, wdr_value);
+        return -1;
+    }
+
+    if (m_wdr != wdr_value) {
+        m_wdr = wdr_value;
+        if (m_flag_camera_start) {
+            if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_WDR, wdr_value) < 0) {
+                ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_WDR", __func__);
+                return -1;
+            }
+        }
+    }
+
+    return 0;
+}
+
+int SecCamera::getWDR(void)
+{
+    return m_wdr;
+}
+
+//======================================================================
+
+int SecCamera::setAntiShake(int anti_shake)
+{
+    ALOGV("%s(anti_shake(%d))", __func__, anti_shake);
+
+    if (anti_shake < ANTI_SHAKE_OFF || ANTI_SHAKE_MAX <= anti_shake) {
+        ALOGE("ERR(%s):Invalid anti_shake (%d)", __func__, anti_shake);
+        return -1;
+    }
+
+    if (m_anti_shake != anti_shake) {
+        m_anti_shake = anti_shake;
+        if (m_flag_camera_start) {
+            if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_ANTI_SHAKE, anti_shake) < 0) {
+                ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_ANTI_SHAKE", __func__);
+                return -1;
+            }
+        }
+    }
+
+    return 0;
+}
+
+int SecCamera::getAntiShake(void)
+{
+    return m_anti_shake;
+}
+
+//======================================================================
+
 
 int SecCamera::setMetering(int metering_value)
 {
@@ -2133,6 +2219,65 @@ int SecCamera::getAutosceneStatus(void)
     //ALOGV("%s :    autoscene_status (%d)", __func__, autoscene_status);
     return autoscene_status;
 }
+//======================================================================
+
+int SecCamera::setBeautyShot(int beauty_shot)
+{
+    ALOGV("%s(beauty_shot (%d))", __func__, beauty_shot);
+
+    if (beauty_shot < BEAUTY_SHOT_OFF || BEAUTY_SHOT_MAX <= beauty_shot) {
+        ALOGE("ERR(%s):Invalid beauty_shot (%d)", __func__, beauty_shot);
+        return -1;
+    }
+
+    if (m_beauty_shot != beauty_shot) {
+        m_beauty_shot = beauty_shot;
+        if (m_flag_camera_start) {
+            if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_BEAUTY_SHOT, beauty_shot) < 0) {
+                ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_BEAUTY_SHOT", __func__);
+                return -1;
+            }
+        }
+
+        setFaceDetect(FACE_DETECTION_ON_BEAUTY);
+    }
+
+    return 0;
+}
+
+int SecCamera::getBeautyShot(void)
+{
+    return m_beauty_shot;
+}
+
+//======================================================================
+
+int SecCamera::setVintageMode(int vintage_mode)
+{
+    ALOGV("%s(vintage_mode(%d))", __func__, vintage_mode);
+
+    if (vintage_mode <= VINTAGE_MODE_BASE || VINTAGE_MODE_MAX <= vintage_mode) {
+        ALOGE("ERR(%s):Invalid vintage_mode (%d)", __func__, vintage_mode);
+        return -1;
+    }
+
+    if (m_vintage_mode != vintage_mode) {
+        m_vintage_mode = vintage_mode;
+        if (m_flag_camera_start) {
+            if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_VINTAGE_MODE, vintage_mode) < 0) {
+                ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_VINTAGE_MODE", __func__);
+                return -1;
+            }
+        }
+    }
+
+    return 0;
+}
+
+int SecCamera::getVintageMode(void)
+{
+    return m_vintage_mode;
+}
 
 //======================================================================
 
@@ -2279,9 +2424,6 @@ int SecCamera::setObjectPosition(int x, int y)
 {
     ALOGV("%s(setObjectPosition(x=%d, y=%d))", __func__, x, y);
 
-    if (m_preview_width ==640)
-        x = x - 80;
-
     if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_OBJECT_POSITION_X, x) < 0) {
         ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_OBJECT_POSITION_X", __func__);
         return -1;
@@ -2293,6 +2435,54 @@ int SecCamera::setObjectPosition(int x, int y)
     }
 
     return 0;
+}
+
+//======================================================================
+
+int SecCamera::setGamma(int gamma)
+{
+     ALOGV("%s(gamma(%d))", __func__, gamma);
+
+     if (gamma < GAMMA_OFF || GAMMA_MAX <= gamma) {
+         ALOGE("ERR(%s):Invalid gamma (%d)", __func__, gamma);
+         return -1;
+     }
+
+     if (m_video_gamma != gamma) {
+         m_video_gamma = gamma;
+         if (m_flag_camera_start) {
+             if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_SET_GAMMA, gamma) < 0) {
+                 ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_SET_GAMMA", __func__);
+                 return -1;
+             }
+         }
+     }
+
+     return 0;
+}
+
+//======================================================================
+
+int SecCamera::setSlowAE(int slow_ae)
+{
+     ALOGV("%s(slow_ae(%d))", __func__, slow_ae);
+
+     if (slow_ae < GAMMA_OFF || GAMMA_MAX <= slow_ae) {
+         ALOGE("ERR(%s):Invalid slow_ae (%d)", __func__, slow_ae);
+         return -1;
+     }
+
+     if (m_slow_ae!= slow_ae) {
+         m_slow_ae = slow_ae;
+         if (m_flag_camera_start) {
+             if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_SET_SLOW_AE, slow_ae) < 0) {
+                 ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_SET_SLOW_AE", __func__);
+                 return -1;
+             }
+         }
+     }
+
+     return 0;
 }
 
 //======================================================================
@@ -2334,6 +2524,23 @@ int SecCamera::setBatchReflection()
     return 0;
 }
 
+/*Video call*/
+int SecCamera::setVTmode(int vtmode)
+{
+    ALOGV("%s(vtmode (%d))", __func__, vtmode);
+
+    if (vtmode < VT_MODE_OFF || VT_MODE_MAX <= vtmode) {
+        ALOGE("ERR(%s):Invalid vtmode (%d)", __func__, vtmode);
+        return -1;
+    }
+
+    if (m_vtmode != vtmode) {
+        m_vtmode = vtmode;
+    }
+
+    return 0;
+}
+
 /* Camcorder fix fps */
 int SecCamera::setSensorMode(int sensor_mode)
 {
@@ -2354,16 +2561,82 @@ int SecCamera::setSensorMode(int sensor_mode)
 /*  Shot mode   */
 /*  SINGLE = 0
 *   CONTINUOUS = 1
+*   PANORAMA = 2
+*   SMILE = 3
+*   SELF = 6
 */
 int SecCamera::setShotMode(int shot_mode)
 {
     ALOGV("%s(shot_mode (%d))", __func__, shot_mode);
-    if (shot_mode < SHOT_MODE_SINGLE || SHOT_MODE_PANORAMA < shot_mode) {
+    if (shot_mode < SHOT_MODE_SINGLE || SHOT_MODE_SELF < shot_mode) {
         ALOGE("ERR(%s):Invalid shot_mode (%d)", __func__, shot_mode);
         return -1;
     }
     m_shot_mode = shot_mode;
 
+    return 0;
+}
+
+int SecCamera::getVTmode(void)
+{
+    return m_vtmode;
+}
+
+int SecCamera::setBlur(int blur_level)
+{
+    ALOGV("%s(level (%d))", __func__, blur_level);
+
+    if (blur_level < BLUR_LEVEL_0 || BLUR_LEVEL_MAX <= blur_level) {
+        ALOGE("ERR(%s):Invalid level (%d)", __func__, blur_level);
+        return -1;
+    }
+
+    if (m_blur_level != blur_level) {
+        m_blur_level = blur_level;
+        if (m_flag_camera_start) {
+            if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_VGA_BLUR, blur_level) < 0) {
+                ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_VGA_BLUR", __func__);
+                return -1;
+            }
+        }
+    }
+    return 0;
+}
+
+int SecCamera::getBlur(void)
+{
+    return m_blur_level;
+}
+
+int SecCamera::setDataLineCheck(int chk_dataline)
+{
+    ALOGV("%s(chk_dataline (%d))", __func__, chk_dataline);
+
+    if (chk_dataline < CHK_DATALINE_OFF || CHK_DATALINE_MAX <= chk_dataline) {
+        ALOGE("ERR(%s):Invalid chk_dataline (%d)", __func__, chk_dataline);
+        return -1;
+    }
+
+    m_chk_dataline = chk_dataline;
+
+    return 0;
+}
+
+int SecCamera::getDataLineCheck(void)
+{
+    return m_chk_dataline;
+}
+
+int SecCamera::setDataLineCheckStop(void)
+{
+    ALOGV("%s", __func__);
+
+    if (m_flag_camera_start) {
+        if (fimc_v4l2_s_ctrl(m_cam_fd, V4L2_CID_CAMERA_CHECK_DATALINE_STOP, 1) < 0) {
+            ALOGE("ERR(%s):Fail on V4L2_CID_CAMERA_CHECK_DATALINE_STOP", __func__);
+            return -1;
+        }
+    }
     return 0;
 }
 
@@ -2508,9 +2781,9 @@ void SecCamera::setExifChangedAttribute()
     int shutterSpeed = fimc_v4l2_g_ctrl(m_cam_fd,
                                             V4L2_CID_CAMERA_GET_SHT_TIME);
     /* TBD - front camera needs to be fixed to support this g_ctrl,
-       it current returns a negative err value/zero, so avoid putting
+       it current returns a negative err value, so avoid putting
        odd value into exif for now */
-    if (shutterSpeed <= 0) {
+    if (shutterSpeed < 0) {
         ALOGE("%s: error %d getting shutterSpeed, camera_id = %d, using 100",
              __func__, shutterSpeed, m_camera_id);
         shutterSpeed = 100;
@@ -2522,9 +2795,9 @@ void SecCamera::setExifChangedAttribute()
     //3 ISO Speed Rating
     int iso = fimc_v4l2_g_ctrl(m_cam_fd, V4L2_CID_CAMERA_GET_ISO);
     /* TBD - front camera needs to be fixed to support this g_ctrl,
-       it current returns a negative err value/zero, so avoid putting
+       it current returns a negative err value, so avoid putting
        odd value into exif for now */
-    if (iso <= 0) {
+    if (iso < 0) {
         ALOGE("%s: error %d getting iso, camera_id = %d, using 100",
              __func__, iso, m_camera_id);
         iso = ISO_100;

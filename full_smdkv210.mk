@@ -36,5 +36,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 # Discard inherited values and use our own instead.
 PRODUCT_NAME := full_smdkv210
 PRODUCT_DEVICE := smdkv210
-PRODUCT_BRAND := MID-Serials
-PRODUCT_MODEL := Android 4.2.1 Tablet
+PRODUCT_BRAND := samsung
+PRODUCT_MANUFACTURER := samsung
+PRODUCT_MODEL := MID-Serials

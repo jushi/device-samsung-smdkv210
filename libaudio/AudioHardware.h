@@ -26,6 +26,8 @@
 #include <hardware_legacy/AudioHardwareBase.h>
 #include <hardware/audio_effect.h>
 
+#include "secril-client.h"
+
 #include <audio_utils/resampler.h>
 #include <audio_utils/echo_reference.h>
 
@@ -79,6 +81,11 @@ class AudioHardware : public AudioHardwareBase
 
 public:
 
+    // input path names used to translate from input sources to driver paths
+    static const char *inputPathNameDefault;
+    static const char *inputPathNameCamcorder;
+    static const char *inputPathNameVoiceRecognition;
+
     AudioHardware();
     virtual ~AudioHardware();
     virtual status_t initCheck();
@@ -116,6 +123,10 @@ public:
 
             status_t setIncallPath_l(uint32_t device);
 
+            status_t setInputSource_l(audio_source source);
+
+            void setVoiceVolume_l(float volume);
+
     static uint32_t    getInputSampleRate(uint32_t sampleRate);
            sp <AudioStreamInALSA> getActiveInput_l();
 
@@ -139,6 +150,13 @@ protected:
 
 private:
 
+    enum tty_modes {
+        TTY_MODE_OFF,
+        TTY_MODE_VCO,
+        TTY_MODE_HCO,
+        TTY_MODE_FULL
+    };
+
     bool            mInit;
     bool            mMicMute;
     sp <AudioStreamOutALSA>                 mOutput;
@@ -151,9 +169,23 @@ private:
     bool            mInCallAudioMode;
     float           mVoiceVol;
 
-    String8         mInputSource;
+    audio_source    mInputSource;
     bool            mBluetoothNrec;
+    int             mTTYMode;
 
+    void*           mSecRilLibHandle;
+    HRilClient      mRilClient;
+    bool            mActivatedCP;
+    HRilClient      (*openClientRILD)  (void);
+    int             (*disconnectRILD)  (HRilClient);
+    int             (*closeClientRILD) (HRilClient);
+    int             (*isConnectedRILD) (HRilClient);
+    int             (*connectRILD)     (HRilClient);
+    int             (*setCallVolume)   (HRilClient, SoundType, int);
+    int             (*setCallAudioPath)(HRilClient, AudioPath);
+    int             (*setCallClockSync)(HRilClient, SoundClockCondition);
+    void            loadRILD(void);
+    status_t        connectRILDIfRequired(void);
     struct echo_reference_itfe *mEchoReference;
 
     //  trace driver operations for dump
@@ -211,8 +243,9 @@ private:
                 status_t open_l();
                 int standbyCnt() { return mStandbyCnt; }
 
-                void lock() { mLock.lock(); }
-                void unlock() { mLock.unlock(); }
+                int prepareLock();
+                void lock();
+                void unlock();
 
                 void addEchoReference(struct echo_reference_itfe *reference);
                 void removeEchoReference(struct echo_reference_itfe *reference);
@@ -236,6 +269,7 @@ private:
         //  trace driver operations for dump
         int mDriverOp;
         int mStandbyCnt;
+        bool mSleepReq;
         struct echo_reference_itfe *mEchoReference;
     };
 
@@ -280,8 +314,9 @@ private:
         static void releaseBufferStatic(struct resampler_buffer_provider *provider,
                              struct resampler_buffer* buffer);
 
-        void lock() { mLock.lock(); }
-        void unlock() { mLock.unlock(); }
+        int prepareLock();
+        void lock();
+        void unlock();
 
      private:
 
@@ -323,6 +358,7 @@ private:
         //  trace driver operations for dump
         int mDriverOp;
         int mStandbyCnt;
+        bool mSleepReq;
         SortedVector<effect_handle_t> mPreprocessors;
         int16_t *mProcBuf;
         size_t mProcBufSize;
