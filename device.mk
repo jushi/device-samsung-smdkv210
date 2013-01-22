@@ -211,7 +211,7 @@ PRODUCT_PACKAGES += \
     GoogleEars GoogleFeedback GoogleLoginService GooglePartnerSetup \
     GoogleServicesFramework GoogleTTS LatinImeDictionaryPack \
     MediaUploader NetworkLocation OneTimeInitializer Phonesky \
-    QuickSearchBox SetupWizard Talk Talkback Vending VoiceSearchStub
+    SetupWizard Talk Talkback Vending VoiceSearchStub
 
 # GoogleApps dependencies.
 PRODUCT_COPY_FILES += \
