@@ -179,7 +179,7 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    libs3cjepg \
+	libs3cjpeg \
 	camera.smdkv210
 
 # GPS config
