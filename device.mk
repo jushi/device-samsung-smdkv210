@@ -56,8 +56,7 @@ PRODUCT_COPY_FILES += \
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/vold.fstab:system/etc/vold.fstab \
-	device/samsung/smdkv210/egl.cfg:system/lib/egl/egl.cfg
+	device/samsung/smdkv210/vold.fstab:system/etc/vold.fstab
 
 # Prebuilt kl and kcm keymaps + idc files.
 PRODUCT_COPY_FILES += \

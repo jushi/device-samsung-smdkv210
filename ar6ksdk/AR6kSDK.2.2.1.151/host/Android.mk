@@ -43,7 +43,7 @@ export  ATH_LINUXPATH=$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ
 else
 # Comment out the following variable for your platform 
 # Link your kernel into android SDK directory as 'kernel' directory
-export  ATH_LINUXPATH=~/dev/mid/kernel3.0
+export  ATH_LINUXPATH=$(ATH_ANDROID_ROOT)/kernel
 endif 
 export  ATH_ARCH_CPU_TYPE=arm
 export  ATH_BUS_SUBTYPE=linux_sdio
