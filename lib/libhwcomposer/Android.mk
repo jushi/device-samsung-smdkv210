@@ -25,7 +25,7 @@ LOCAL_SHARED_LIBRARIES := liblog libcutils libEGL libGLESv1_CM libhardware libha
 LOCAL_CFLAGS += -DLOG_TAG=\"hwcomposer\"
 
 LOCAL_C_INCLUDES := \
-    $(LOCAL_PATH)/../include
+    $(LOCAL_PATH)/../../include
 
 LOCAL_SRC_FILES := SecHWCUtils.cpp SecHWC.cpp
 

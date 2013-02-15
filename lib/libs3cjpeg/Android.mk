@@ -19,7 +19,7 @@ include $(CLEAR_VARS)
 
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/../include
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../include
 
 LOCAL_SRC_FILES:= \
 	JpegEncoder.cpp

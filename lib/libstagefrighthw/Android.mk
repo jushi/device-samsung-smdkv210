@@ -11,7 +11,7 @@ LOCAL_CFLAGS += $(PV_CFLAGS_MINUS_VISIBILITY)
 LOCAL_C_INCLUDES:= \
       $(TOP)/frameworks/native/include/media/openmax \
       $(TOP)/frameworks/native/include/media/hardware \
-      $(LOCAL_PATH)/../include \
+      $(LOCAL_PATH)/../../include \
 
 LOCAL_SHARED_LIBRARIES :=    \
         libbinder            \

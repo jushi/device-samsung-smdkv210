@@ -165,7 +165,7 @@ PRODUCT_PACKAGES += \
 	audio_policy.smdkv210
 
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/libaudio/audio_policy.conf:system/etc/audio_policy.conf
+	device/samsung/smdkv210/lib/libaudio/audio_policy.conf:system/etc/audio_policy.conf
 
 # Camera
 PRODUCT_PACKAGES += \
