@@ -12,29 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ifneq ($(filter smdkv210,$(TARGET_DEVICE)),)
+ifeq ($(filter-out s5pc110,$(TARGET_BOARD_PLATFORM)),)
 
 LOCAL_PATH:= $(call my-dir)
-# HAL module implemenation, not prelinked and stored in
-# hw/<COPYPIX_HARDWARE_MODULE_ID>.<ro.product.board>.so
-
 include $(CLEAR_VARS)
-LOCAL_PRELINK_MODULE := false
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
-LOCAL_SHARED_LIBRARIES := liblog libcutils libEGL libGLESv1_CM libhardware libhardware_legacy
-LOCAL_CFLAGS += -DLOG_TAG=\"hwcomposer\"
 
-LOCAL_C_INCLUDES := \
-    $(LOCAL_PATH)/../include
 
-LOCAL_SRC_FILES := SecHWCUtils.cpp SecHWC.cpp
+LOCAL_C_INCLUDES := $(LOCAL_PATH)
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../include
 
-ifeq ($(BOARD_CUSTOM_VSYNC_IOCTL),true)
-    LOCAL_CFLAGS += -DVSYNC_IOCTL
-endif
+LOCAL_SRC_FILES:= \
+	JpegEncoder.cpp
 
-LOCAL_MODULE := hwcomposer.smdkv210
+LOCAL_SHARED_LIBRARIES:= liblog
+LOCAL_SHARED_LIBRARIES+= libdl
+
+LOCAL_MODULE:= libs3cjpeg
+
 LOCAL_MODULE_TAGS := optional
+
+
+
 include $(BUILD_SHARED_LIBRARY)
 
 endif
