@@ -30,7 +30,6 @@
   <item name="dsp.video">88</item>
   <item name="radio.active">185</item>
   <item name="gps.on">50</item>
-  <item name="battery.capacity">4000</item>
   <item name="radio.scanning">0.1</item>
   <array name="radio.on"> <!-- Strength 0 to BINS-1 -->
       <value>0.1</value>

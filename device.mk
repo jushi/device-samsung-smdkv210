@@ -49,25 +49,25 @@ PRODUCT_PACKAGES += \
 
 # Init files
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/init.smdkv210.rc:root/init.smdkv210.rc \
-	device/samsung/smdkv210/init.smdkv210.usb.rc:root/init.smdkv210.usb.rc \
-	device/samsung/smdkv210/fstab.smdkv210:root/fstab.smdkv210 \
-	device/samsung/smdkv210/ueventd.smdkv210.rc:root/ueventd.smdkv210.rc
+	device/samsung/smdkv210/init/init.smdkv210.rc:root/init.smdkv210.rc \
+	device/samsung/smdkv210/init/init.smdkv210.usb.rc:root/init.smdkv210.usb.rc \
+	device/samsung/smdkv210/init/fstab.smdkv210:root/fstab.smdkv210 \
+	device/samsung/smdkv210/init/ueventd.smdkv210.rc:root/ueventd.smdkv210.rc
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/vold.fstab:system/etc/vold.fstab
+	device/samsung/smdkv210/init/vold.fstab:system/etc/vold.fstab
 
 # Prebuilt kl and kcm keymaps + idc files.
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/ft5x0x_ts.kl:system/usr/keylayout/ft5x0x_ts.kl \
-	device/samsung/smdkv210/ft5x0x_ts.kcm:system/usr/keychars/ft5x0x_ts.kcm \
-	device/samsung/smdkv210/ft5x0x_ts.idc:system/usr/idc/ft5x0x_ts.idc \
-	device/samsung/smdkv210/s3c-button.kl:system/usr/keylayout/s3c-button.kl \
-	device/samsung/smdkv210/s3c-button.kcm:system/usr/keychars/s3c-button.kcm \
-	device/samsung/smdkv210/S5P_TouchScreen.kl:system/usr/keylayout/S5P_TouchScreen.kl \
-	device/samsung/smdkv210/S5P_TouchScreen.kcm:system/usr/keychars/S5P_TouchScreen.kcm \
-	device/samsung/smdkv210/S5P_TouchScreen.idc:system/usr/idc/S5P_TouchScreen.idc
+	device/samsung/smdkv210/keymaps/ft5x0x_ts.kl:system/usr/keylayout/ft5x0x_ts.kl \
+	device/samsung/smdkv210/keymaps/ft5x0x_ts.kcm:system/usr/keychars/ft5x0x_ts.kcm \
+	device/samsung/smdkv210/keymaps/ft5x0x_ts.idc:system/usr/idc/ft5x0x_ts.idc \
+	device/samsung/smdkv210/keymaps/s3c-button.kl:system/usr/keylayout/s3c-button.kl \
+	device/samsung/smdkv210/keymaps/s3c-button.kcm:system/usr/keychars/s3c-button.kcm \
+	device/samsung/smdkv210/keymaps/S5P_TouchScreen.kl:system/usr/keylayout/S5P_TouchScreen.kl \
+	device/samsung/smdkv210/keymaps/S5P_TouchScreen.kcm:system/usr/keychars/S5P_TouchScreen.kcm \
+	device/samsung/smdkv210/keymaps/S5P_TouchScreen.idc:system/usr/idc/S5P_TouchScreen.idc
 
 # Busybox + scripts
 PRODUCT_COPY_FILES += \
@@ -86,12 +86,9 @@ PRODUCT_COPY_FILES += \
 WIFI_BAND := 802_11_BG
 
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
-	device/samsung/smdkv210/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-	device/samsung/smdkv210/hostapd.conf:system/etc/wifi/hostapd.conf
-#	device/samsung/smdkv210/proprietary/wifi/data.patch.hw2_0.bin:system/wifi/data.patch.hw2_0.bin \
-#	device/samsung/smdkv210/proprietary/wifi/athwlan.bin.z77:system/wifi/athwlan.bin.z77 \
-#	device/samsung/smdkv210/proprietary/wifi/calData_ar6102_15dBm.bin:system/wifi/calData_ar6102_15dBm.bin
+	device/samsung/smdkv210/config/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
+	device/samsung/smdkv210/config/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+	device/samsung/smdkv210/config/hostapd.conf:system/etc/wifi/hostapd.conf
 
 PRODUCT_PACKAGES += \
         athwlan.bin.z77 \
@@ -103,7 +100,7 @@ PRODUCT_PACKAGES += \
 
 # MFC Firmware
 PRODUCT_COPY_FILES += \
-        device/samsung/smdkv210/samsung_mfc_fw.bin:system/vendor/firmware/samsung_mfc_fw.bin
+        device/samsung/smdkv210/proprietary/firmware/samsung_mfc_fw.bin:system/vendor/firmware/samsung_mfc_fw.bin
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
@@ -135,7 +132,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	audiotest \
 	evtest \
-    lcd_info
+	lcd_info
 
 # PowerVR libs
 PRODUCT_COPY_FILES += \
@@ -179,9 +176,9 @@ PRODUCT_COPY_FILES += \
 
 # These are the OpenMAX IL configuration files
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry \
-	device/samsung/smdkv210/media_profiles.xml:system/etc/media_profiles.xml \
-	device/samsung/smdkv210/media_codecs.xml:system/etc/media_codecs.xml
+	device/samsung/smdkv210/codecs/secomxregistry:system/etc/secomxregistry \
+	device/samsung/smdkv210/codecs/media_profiles.xml:system/etc/media_profiles.xml \
+	device/samsung/smdkv210/codecs/media_codecs.xml:system/etc/media_codecs.xml
 
 # These are the OpenMAX IL modules
 PRODUCT_PACKAGES += \
@@ -190,7 +187,6 @@ PRODUCT_PACKAGES += \
 	libOMX.SEC.M4V.Decoder \
 	libOMX.SEC.M4V.Encoder \
 	libOMX.SEC.AVC.Encoder
-
 
 # Libs
 PRODUCT_PACKAGES += \

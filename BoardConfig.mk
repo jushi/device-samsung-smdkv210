@@ -57,7 +57,7 @@ BOARD_CAMERA_LIBRARIES := camera.smdkv210
 # Display
 USE_OPENGL_RENDERER	:= true
 TARGET_DISABLE_TRIPLE_BUFFERING := false
-BOARD_EGL_CFG := device/samsung/smdkv210/egl.cfg
+BOARD_EGL_CFG := device/samsung/smdkv210/config/egl.cfg
 BOARD_USES_OVERLAY := true
 BOARD_ALLOW_EGL_HIBERNATION := true
 #TARGET_USE_HWDECODING_TVOUT := true
