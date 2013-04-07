@@ -204,14 +204,16 @@ PRODUCT_PACKAGES += \
 
 # Preinstalled utility app(s).
 PRODUCT_PACKAGES += \
-    ESFileExplorer \
-    Superuser
+	ESFileExplorer \
+	ESTaskManager \
+	Superuser \
+	SuperSUNoNag
 
 # Bundle of GoogleApps.
 PRODUCT_PACKAGES += \
-    ChromeBookmarksSyncAdapter FaceLock GalleryGoogle GenieWidget Gmail2 GmsCore \
+    ChromeBookmarksSyncAdapter ConfigUpdater GenieWidget GmsCore \
     GoogleBackupTransport GoogleCalendarSyncAdapter GoogleContactsSyncAdapter \
-    GoogleEars GoogleFeedback GoogleLoginService GooglePartnerSetup \
+    GoogleFeedback GoogleLoginService GooglePartnerSetup \
     GoogleServicesFramework GoogleTTS LatinImeDictionaryPack \
     MediaUploader NetworkLocation OneTimeInitializer Phonesky \
     SetupWizard Talk Talkback Vending VoiceSearchStub
@@ -226,7 +228,6 @@ PRODUCT_COPY_FILES += \
     device/samsung/smdkv210/google/framework/com.google.android.maps.jar:system/framework/com.google.android.maps.jar \
     device/samsung/smdkv210/google/framework/com.google.android.media.effects.jar:system/framework/com.google.android.media.effects.jar \
     device/samsung/smdkv210/google/framework/com.google.widevine.software.drm.jar:system/framework/com.google.widevine.software.drm.jar \
-    device/samsung/smdkv210/google/lib/libfacelock_jni.so:system/lib/libfacelock_jni.so \
     device/samsung/smdkv210/google/lib/libfilterpack_facedetect.so:system/lib/libfilterpack_facedetect.so \
     device/samsung/smdkv210/google/lib/libfrsdk.so:system/lib/libfrsdk.so \
     device/samsung/smdkv210/google/lib/libgcomm_jni.so:system/lib/libgcomm_jni.so \
@@ -234,7 +235,6 @@ PRODUCT_COPY_FILES += \
     device/samsung/smdkv210/google/lib/libgtalk_jni.so:system/lib/libgtalk_jni.so \
     device/samsung/smdkv210/google/lib/libgtalk_stabilize.so:system/lib/libgtalk_stabilize.so \
     device/samsung/smdkv210/google/lib/libjni_latinime.so:system/lib/libjni_latinime.so \
-    device/samsung/smdkv210/google/lib/liblightcycle.so:system/lib/liblightcycle.so \
     device/samsung/smdkv210/google/lib/libpatts_engine_jni_api.so:system/lib/libpatts_engine_jni_api.so \
     device/samsung/smdkv210/google/lib/libspeexwrapper.so:system/lib/libspeexwrapper.so \
     device/samsung/smdkv210/google/lib/libvorbisencoder.so:system/lib/libvorbisencoder.so \
@@ -273,13 +273,37 @@ PRODUCT_COPY_FILES += \
     device/samsung/smdkv210/google/usr/srec/en-US/phonelist:system/usr/srec/en-US/phonelist \
     device/samsung/smdkv210/google/usr/srec/en-US/rescoring_lm:system/usr/srec/en-US/rescoring_lm \
     device/samsung/smdkv210/google/usr/srec/en-US/symbols:system/usr/srec/en-US/symbols \
-    device/samsung/smdkv210/google/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/left_eye-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin:system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/left_eye-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin \
-    device/samsung/smdkv210/google/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/nose_base-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin:system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/nose_base-y0-yi45-p0-pi45-r0-ri20.lg_32/full_model.bin \
-    device/samsung/smdkv210/google/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/right_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-2/full_model.bin:system/vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.7/right_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-2/full_model.bin \
-    device/samsung/smdkv210/google/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-r0-ri30.4a-v24/full_model.bin:system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-r0-ri30.4a-v24/full_model.bin \
-    device/samsung/smdkv210/google/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rn30-ri30.5-v24/full_model.bin:system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rn30-ri30.5-v24/full_model.bin \
-    device/samsung/smdkv210/google/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rp30-ri30.5-v24/full_model.bin:system/vendor/pittpatt/models/detection/yaw_roll_face_detectors.6/head-y0-yi45-p0-pi45-rp30-ri30.5-v24/full_model.bin \
-    device/samsung/smdkv210/google/vendor/pittpatt/models/recognition/face.face.y0-y0-22-b-N/full_model.bin:system/vendor/pittpatt/models/recognition/face.face.y0-y0-22-b-N/full_model.bin
+
+# GoogleApps properties
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.addon.type=gapps \
+	ro.addon.platform=jb42 \
+	ro.addon.version=gapps-jb-20130301
+
+# Additional GoogleApps built from source
+PRODUCT_PACKAGES += \
+	Email Gallery2 SpareParts SoundRecorder
+
+# Live Wallpapers
+PRODUCT_PACKAGES += \
+        LiveWallpapers \
+        LiveWallpapersPicker \
+        VisualizationWallpapers \
+	Galaxy4 \
+	HoloSpiralWallpaper \
+	MagicSmokeWallpapers \
+	NoiseField \
+	PhaseBeam \
+        librs_jni
+
+# Screensavers
+PRODUCT_PACKAGES += \
+	BasicDreams \
+	PhotoTable \
+	WebViewDream
+
+# Get the long list of APNs
+PRODUCT_COPY_FILES += device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
 
 # GNU Linux libs
 PRODUCT_COPY_FILES += \

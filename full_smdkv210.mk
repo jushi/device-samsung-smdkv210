@@ -19,16 +19,6 @@
 # product configuration (apps).
 #
 
-# Get the long list of APNs
-PRODUCT_COPY_FILES += device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
-
-# Live Wallpapers
-PRODUCT_PACKAGES += \
-        LiveWallpapers \
-        LiveWallpapersPicker \
-        VisualizationWallpapers \
-        librs_jni
-
 # Inherit from those products. Most specific first.
 $(call inherit-product, device/samsung/smdkv210/device.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
