@@ -1,0 +1,20 @@
+
+#
+# system.prop for smdkv210
+#
+
+#
+# 3G Additions
+#
+#rild.libpath=/system/lib/libhuaweigeneric-ril.so
+#rild.libargs=-d /dev/ttyUSB2 -v /dev/ttyUSB1
+#rild.ppp.tty=/dev/ttyUSB0
+#ro.pad.features.modem=true
+
+#
+# Other additions
+#
+
+debug.performance.tuning=1
+video.accelerate.hw=1
+dalvik.vm.dexopt-data-only=1

@@ -18,8 +18,13 @@
 # that are specific to this hardware: i.e. those are device-specific
 # drivers, configuration files, settings, etc...
 
-# Screen size is "large", density is "mdpi"
-PRODUCT_AAPT_CONFIG := large mdpi
+# Screen size is "large", density is "hdpi"
+PRODUCT_AAPT_CONFIG := large hdpi
+PRODUCT_LOCALES += hdpi
+
+# dpi
+PRODUCT_PROPERTY_OVERRIDES := \
+	ro.sf.lcd_density=120
 
 # These is the hardware-specific overlay, which points to the location
 # of hardware-specific resource overrides, typically the frameworks and
@@ -30,10 +35,13 @@ DEVICE_PACKAGE_OVERLAYS := device/samsung/smdkv210/overlay
 TARGET_SCREEN_WIDTH := 800
 TARGET_SCREEN_HEIGHT := 480
 
+PRODUCT_COPY_FILES += \
+	device/samsung/smdkv210/media/bootanimation.zip:system/media/bootanimation.zip
+
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
-PRODUCT_PROPERTY_OVERRIDES := \
-    ro.opengles.version=131072
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.opengles.version=131072
 
 # These are the hardware-specific settings that are stored in system properties.
 # Note that the only such settings should be the ones that are too low-level to
@@ -69,15 +77,6 @@ PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/keymaps/S5P_TouchScreen.kcm:system/usr/keychars/S5P_TouchScreen.kcm \
 	device/samsung/smdkv210/keymaps/S5P_TouchScreen.idc:system/usr/idc/S5P_TouchScreen.idc
 
-# Busybox + scripts
-PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/rooting/su:system/bin/su \
-	device/samsung/smdkv210/rooting/busybox:system/xbin/busybox \
-	device/samsung/smdkv210/rooting/insmod.sh:system/etc/insmod.sh \
-	device/samsung/smdkv210/rooting/check_property.sh:system/etc/check_property.sh \
-	device/samsung/smdkv210/rooting/install_busybox.sh:system/etc/install_busybox.sh \
-	device/samsung/smdkv210/rooting/initial_setup.sh:system/etc/initial_setup.sh
-
 # Bluetooth setup
 PRODUCT_COPY_FILES += \
 	system/bluetooth/data/main.conf:system/etc/bluetooth/main.conf
@@ -95,8 +94,8 @@ PRODUCT_PACKAGES += \
         data.patch.hw2_0.bin \
         calData_ar6102_15dBm.bin \
         recEvent \
-        wmiconfig \
-        abtfilt
+        wmiconfig 
+#        abtfilt
 
 # MFC Firmware
 PRODUCT_COPY_FILES += \
@@ -204,19 +203,36 @@ PRODUCT_PACKAGES += \
 
 # Preinstalled utility app(s).
 PRODUCT_PACKAGES += \
+	AdobeFlashPlayer \
 	ESFileExplorer \
 	ESTaskManager \
 	Superuser \
-	SuperSUNoNag
+	SuperSUNoNag \
+	TerminalEmulator
+
+# External GPS Support
+PRODUCT_PACKAGES += \
+	UsbGPS4Droid \
+	GPSTest \
+	SerialPort 
+
+# Busybox + scripts
+PRODUCT_COPY_FILES += \
+	device/samsung/smdkv210/rooting/bin/su:system/bin/su \
+	device/samsung/smdkv210/rooting/xbin/busybox:system/xbin/busybox \
+	device/samsung/smdkv210/rooting/etc/insmod.sh:system/etc/insmod.sh \
+	device/samsung/smdkv210/rooting/etc/check_property.sh:system/etc/check_property.sh \
+	device/samsung/smdkv210/rooting/etc/install_busybox.sh:system/etc/install_busybox.sh \
+	device/samsung/smdkv210/rooting/etc/initial_setup.sh:system/etc/initial_setup.sh
 
 # Bundle of GoogleApps.
 PRODUCT_PACKAGES += \
-    ChromeBookmarksSyncAdapter ConfigUpdater GenieWidget GmsCore \
-    GoogleBackupTransport GoogleCalendarSyncAdapter GoogleContactsSyncAdapter \
-    GoogleFeedback GoogleLoginService GooglePartnerSetup \
-    GoogleServicesFramework GoogleTTS LatinImeDictionaryPack \
-    MediaUploader NetworkLocation OneTimeInitializer Phonesky \
-    SetupWizard Talk Talkback Vending VoiceSearchStub
+	ChromeBookmarksSyncAdapter ConfigUpdater GenieWidget GmsCore \
+	GoogleBackupTransport GoogleCalendarSyncAdapter GoogleContactsSyncAdapter \
+	GoogleFeedback GoogleLoginService GooglePartnerSetup \
+	GoogleServicesFramework GoogleTTS LatinImeDictionaryPack \
+	MediaUploader NetworkLocation OneTimeInitializer Phonesky \
+	SetupWizard Talk Talkback Vending VoiceSearchStub
 
 # GoogleApps dependencies.
 PRODUCT_COPY_FILES += \

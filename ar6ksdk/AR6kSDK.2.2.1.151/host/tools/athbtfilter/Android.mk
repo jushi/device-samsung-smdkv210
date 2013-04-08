@@ -19,6 +19,6 @@
 
 ifneq ($(TARGET_SIMULATOR),true)
 ifeq ($(BOARD_HAVE_BLUETOOTH),true)
-  include $(call all-subdir-makefiles)
+#  include $(call all-subdir-makefiles)
 endif
 endif
