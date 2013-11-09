@@ -298,7 +298,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Additional GoogleApps built from source
 PRODUCT_PACKAGES += \
-	Email Gallery2 SpareParts SoundRecorder
+	Email FusedLocation Gallery2 SpareParts SoundRecorder
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
