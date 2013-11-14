@@ -7,6 +7,12 @@
 /dev/block/mmcblk0p3                                    /data               ext4      noatime,nosuid,nodev,nomblk_io_submit                 wait
 /dev/block/mmcblk0p2                                    /cache              ext4      noatime,nosuid,nodev,nomblk_io_submit                 wait
 
+# External storage
+
 /devices/platform/s3c-sdhci.0/mmc_host/mmc0 		/storage/sdcard0    vfat      defaults    voldmanaged=sdcard0:1,nonremovable
 /devices/platform/s3c-sdhci.2/mmc_host/mmc2 		/storage/sdcard1    vfat      defaults    voldmanaged=sdcard1:auto
 /devices/platform/s5p-ehci/usb1 			/storage/udisk	    vfat      defaults    voldmanaged=udisk:auto
+
+# zRam device of 64MB
+
+/dev/block/zram0 					none 		    swap      defaults    zramsize=67108864
