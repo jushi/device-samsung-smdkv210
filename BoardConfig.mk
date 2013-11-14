@@ -23,6 +23,7 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_CPU_VARIANT := cortex-a8
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
 TARGET_NO_BOOTLOADER := true
@@ -40,7 +41,7 @@ TARGET_BOOTLOADER_BOARD_NAME := smdkv210
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/smdkv210/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/smdkv210/hardware/bluetooth
 
 BOARD_USES_HGL := true
 DEFAULT_FB_NUM := 2
@@ -61,10 +62,12 @@ BOARD_EGL_CFG := device/samsung/smdkv210/config/egl.cfg
 BOARD_USES_OVERLAY := true
 BOARD_ALLOW_EGL_HIBERNATION := true
 #TARGET_USE_HWDECODING_TVOUT := true
+BOARD_USES_HDMI := true
 TARGET_SEC_OMX_BIG_MMAP_BUFFER_SIZE := true
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # hwcomposer: custom vsync ioctl
-BOARD_CUSTOM_VSYNC_IOCTL := true
+#BOARD_CUSTOM_VSYNC_IOCTL := true
 
 # Wi-Fi
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
@@ -77,7 +80,7 @@ WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ar6000.ko"
 WIFI_DRIVER_MODULE_NAME     := "ar6000"
 WIFI_DRIVER_MODULE_ARG      := ""
 WIFI_DRIVER_LOADER_DELAY    := 3000000
-BOARD_WLAN_ATHEROS_SDK      := device/samsung/smdkv210/ar6ksdk/AR6kSDK.2.2.1.151
+BOARD_WLAN_ATHEROS_SDK      := device/samsung/smdkv210/hardware/ar6ksdk/AR6kSDK.2.2.1.151
 
 # 3G
 BOARD_MOBILEDATA_INTERFACE_NAME := "ppp0"
