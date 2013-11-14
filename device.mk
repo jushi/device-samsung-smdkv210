@@ -229,78 +229,8 @@ PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/rooting/etc/insmod.sh:system/etc/insmod.sh \
 	device/samsung/smdkv210/rooting/etc/check_property.sh:system/etc/check_property.sh \
 	device/samsung/smdkv210/rooting/etc/install_busybox.sh:system/etc/install_busybox.sh \
-	device/samsung/smdkv210/rooting/etc/initial_setup.sh:system/etc/initial_setup.sh
-
-# Bundle of GoogleApps.
-#PRODUCT_PACKAGES += \
-#	ChromeBookmarksSyncAdapter ConfigUpdater GenieWidget GmsCore \
-#	GoogleBackupTransport GoogleCalendarSyncAdapter GoogleContactsSyncAdapter \
-#	GoogleFeedback GoogleLoginService GooglePartnerSetup \
-#	GoogleServicesFramework GoogleTTS LatinImeDictionaryPack \
-#	MediaUploader NetworkLocation OneTimeInitializer Phonesky \
-#	SetupWizard Talk Talkback Vending VoiceSearchStub
-
-# GoogleApps dependencies.
-#PRODUCT_COPY_FILES += \
-#    device/samsung/smdkv210/google/etc/permissions/com.google.android.maps.xml:system/etc/permissions/com.google.android.maps.xml \
-#    device/samsung/smdkv210/google/etc/permissions/com.google.android.media.effects.xml:system/etc/permissions/com.google.android.media.effects.xml \
-#    device/samsung/smdkv210/google/etc/permissions/com.google.widevine.software.drm.xml:system/etc/permissions/com.google.widevine.software.drm.xml \
-#    device/samsung/smdkv210/google/etc/permissions/features.xml:system/etc/permissions/features.xml \
-#    device/samsung/smdkv210/google/etc/preferred-apps/google.xml:system/etc/preferred-apps/google.xml \
-#    device/samsung/smdkv210/google/framework/com.google.android.maps.jar:system/framework/com.google.android.maps.jar \
-#    device/samsung/smdkv210/google/framework/com.google.android.media.effects.jar:system/framework/com.google.android.media.effects.jar \
-#    device/samsung/smdkv210/google/framework/com.google.widevine.software.drm.jar:system/framework/com.google.widevine.software.drm.jar \
-#    device/samsung/smdkv210/google/lib/libfilterpack_facedetect.so:system/lib/libfilterpack_facedetect.so \
-#    device/samsung/smdkv210/google/lib/libfrsdk.so:system/lib/libfrsdk.so \
-#    device/samsung/smdkv210/google/lib/libgcomm_jni.so:system/lib/libgcomm_jni.so \
-#    device/samsung/smdkv210/google/lib/libgoogle_recognizer_jni.so:system/lib/libgoogle_recognizer_jni.so \
-#    device/samsung/smdkv210/google/lib/libgtalk_jni.so:system/lib/libgtalk_jni.so \
-#    device/samsung/smdkv210/google/lib/libgtalk_stabilize.so:system/lib/libgtalk_stabilize.so \
-#    device/samsung/smdkv210/google/lib/libjni_latinime.so:system/lib/libjni_latinime.so \
-#    device/samsung/smdkv210/google/lib/libpatts_engine_jni_api.so:system/lib/libpatts_engine_jni_api.so \
-#    device/samsung/smdkv210/google/lib/libspeexwrapper.so:system/lib/libspeexwrapper.so \
-#    device/samsung/smdkv210/google/lib/libvorbisencoder.so:system/lib/libvorbisencoder.so \
-#    device/samsung/smdkv210/google/tts/lang_pico/de-DE_gl0_sg.bin:system/tts/lang_pico/de-DE_gl0_sg.bin \
-#    device/samsung/smdkv210/google/tts/lang_pico/de-DE_ta.bin:system/tts/lang_pico/de-DE_ta.bin \
-#    device/samsung/smdkv210/google/tts/lang_pico/es-ES_ta.bin:system/tts/lang_pico/es-ES_ta.bin \
-#    device/samsung/smdkv210/google/tts/lang_pico/es-ES_zl0_sg.bin:system/tts/lang_pico/es-ES_zl0_sg.bin \
-#    device/samsung/smdkv210/google/tts/lang_pico/fr-FR_nk0_sg.bin:system/tts/lang_pico/fr-FR_nk0_sg.bin \
-#    device/samsung/smdkv210/google/tts/lang_pico/fr-FR_ta.bin:system/tts/lang_pico/fr-FR_ta.bin \
-#    device/samsung/smdkv210/google/tts/lang_pico/it-IT_cm0_sg.bin:system/tts/lang_pico/it-IT_cm0_sg.bin \
-#    device/samsung/smdkv210/google/tts/lang_pico/it-IT_ta.bin:system/tts/lang_pico/it-IT_ta.bin \
-#    device/samsung/smdkv210/google/usr/srec/en-US/acoustic_model:system/usr/srec/en-US/acoustic_model \
-#    device/samsung/smdkv210/google/usr/srec/en-US/c_fst:system/usr/srec/en-US/c_fst \
-#    device/samsung/smdkv210/google/usr/srec/en-US/clg:system/usr/srec/en-US/clg \
-#    device/samsung/smdkv210/google/usr/srec/en-US/compile_grammar.config:system/usr/srec/en-US/compile_grammar.config \
-#    device/samsung/smdkv210/google/usr/srec/en-US/contacts.abnf:system/usr/srec/en-US/contacts.abnf \
-#    device/samsung/smdkv210/google/usr/srec/en-US/dict:system/usr/srec/en-US/dict \
-#    device/samsung/smdkv210/google/usr/srec/en-US/dictation.config:system/usr/srec/en-US/dictation.config \
-#    device/samsung/smdkv210/google/usr/srec/en-US/embed_phone_nn_model:system/usr/srec/en-US/embed_phone_nn_model \
-#    device/samsung/smdkv210/google/usr/srec/en-US/embed_phone_nn_state_sym:system/usr/srec/en-US/embed_phone_nn_state_sym \
-#    device/samsung/smdkv210/google/usr/srec/en-US/endpointer_dictation.config:system/usr/srec/en-US/endpointer_dictation.config \
-#    device/samsung/smdkv210/google/usr/srec/en-US/endpointer_voicesearch.config:system/usr/srec/en-US/endpointer_voicesearch.config \
-#    device/samsung/smdkv210/google/usr/srec/en-US/ep_acoustic_model:system/usr/srec/en-US/ep_acoustic_model \
-#    device/samsung/smdkv210/google/usr/srec/en-US/g2p_fst:system/usr/srec/en-US/g2p_fst \
-#    device/samsung/smdkv210/google/usr/srec/en-US/google_hotword_clg:system/usr/srec/en-US/google_hotword_clg \
-#    device/samsung/smdkv210/google/usr/srec/en-US/google_hotword.config:system/usr/srec/en-US/google_hotword.config \
-#    device/samsung/smdkv210/google/usr/srec/en-US/google_hotword_logistic:system/usr/srec/en-US/google_hotword_logistic \
-#    device/samsung/smdkv210/google/usr/srec/en-US/grammar.config:system/usr/srec/en-US/grammar.config \
-#    device/samsung/smdkv210/google/usr/srec/en-US/hmmsyms:system/usr/srec/en-US/hmmsyms \
-#    device/samsung/smdkv210/google/usr/srec/en-US/hotword_symbols:system/usr/srec/en-US/hotword_symbols \
-#    device/samsung/smdkv210/google/usr/srec/en-US/lintrans_model:system/usr/srec/en-US/lintrans_model \
-#    device/samsung/smdkv210/google/usr/srec/en-US/metadata:system/usr/srec/en-US/metadata \
-#    device/samsung/smdkv210/google/usr/srec/en-US/normalizer:system/usr/srec/en-US/normalizer \
-#    device/samsung/smdkv210/google/usr/srec/en-US/norm_fst:system/usr/srec/en-US/norm_fst \
-#    device/samsung/smdkv210/google/usr/srec/en-US/offensive_word_normalizer:system/usr/srec/en-US/offensive_word_normalizer \
-#    device/samsung/smdkv210/google/usr/srec/en-US/phonelist:system/usr/srec/en-US/phonelist \
-#    device/samsung/smdkv210/google/usr/srec/en-US/rescoring_lm:system/usr/srec/en-US/rescoring_lm \
-#    device/samsung/smdkv210/google/usr/srec/en-US/symbols:system/usr/srec/en-US/symbols \
-
-# GoogleApps properties
-#PRODUCT_PROPERTY_OVERRIDES += \
-#	ro.addon.type=gapps \
-#	ro.addon.platform=jb42 \
-#	ro.addon.version=gapps-jb-20130301
+	device/samsung/smdkv210/rooting/etc/initial_setup.sh:system/etc/initial_setup.sh \
+	device/samsung/smdkv210/rooting/etc/init.d/99SuperSUDaemon:system/etc/init.d/99SuperSUDaemon
 
 # Additional GoogleApps built from source
 PRODUCT_PACKAGES += \

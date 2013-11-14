@@ -196,3 +196,5 @@ service insmod /system/xbin/busybox sh /system/etc/insmod.sh
     class main
     oneshot
 
+service su_daemon /system/xbin/daemonsu --auto-daemon
+
