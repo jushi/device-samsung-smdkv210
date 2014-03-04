@@ -200,17 +200,17 @@ PRODUCT_PACKAGES += \
 # Misc other modules
 PRODUCT_PACKAGES += \
 	hdmi.s5pc110 \
-	power.s5pc110 \
 	sensors.smdkv210
+#	power.s5pc110 \
 
 # Preinstalled utility app(s).
 PRODUCT_PACKAGES += \
 	AdobeFlashPlayer \
 	ESFileExplorer \
 	ESTaskManager \
+	TerminalEmulator \
 	Superuser \
-	SuperSUNoNag \
-	TerminalEmulator
+	SuperSUNoNag
 
 # TerminalEmulator support library
 PRODUCT_COPY_FILES += \
@@ -225,6 +225,7 @@ PRODUCT_PACKAGES += \
 # Busybox + scripts
 PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/rooting/bin/su:system/bin/su \
+	device/samsung/smdkv210/rooting/bin/su:system/xbin/su \
 	device/samsung/smdkv210/rooting/xbin/busybox:system/xbin/busybox \
 	device/samsung/smdkv210/rooting/etc/insmod.sh:system/etc/insmod.sh \
 	device/samsung/smdkv210/rooting/etc/check_property.sh:system/etc/check_property.sh \
