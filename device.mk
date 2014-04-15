@@ -18,6 +18,11 @@
 # that are specific to this hardware: i.e. those are device-specific
 # drivers, configuration files, settings, etc...
 
+# These is the hardware-specific overlay, which points to the location
+# of hardware-specific resource overrides, typically the frameworks and
+# application settings that are stored in resourced.
+DEVICE_PACKAGE_OVERLAYS := device/samsung/smdkv210/overlay
+
 # Screen size is "large", density is "hdpi"
 PRODUCT_AAPT_CONFIG := large hdpi
 PRODUCT_LOCALES += hdpi
@@ -25,15 +30,6 @@ PRODUCT_LOCALES += hdpi
 # dpi
 PRODUCT_PROPERTY_OVERRIDES := \
 	ro.sf.lcd_density=120
-
-# These is the hardware-specific overlay, which points to the location
-# of hardware-specific resource overrides, typically the frameworks and
-# application settings that are stored in resourced.
-DEVICE_PACKAGE_OVERLAYS := device/samsung/smdkv210/overlay
-
-# Bootanimation
-TARGET_SCREEN_WIDTH := 800
-TARGET_SCREEN_HEIGHT := 480
 
 PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/media/bootanimation.zip:system/media/bootanimation.zip
@@ -59,8 +55,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/init/init.smdkv210.rc:root/init.smdkv210.rc \
 	device/samsung/smdkv210/init/init.smdkv210.usb.rc:root/init.smdkv210.usb.rc \
+	device/samsung/smdkv210/init/init.recovery.smdkv210.rc:root/init.recovery.smdkv210.rc \
+	device/samsung/smdkv210/init/init.smdkv210.usb.rc:recovery/root/usb.rc \
 	device/samsung/smdkv210/init/fstab.smdkv210:root/fstab.smdkv210 \
 	device/samsung/smdkv210/init/ueventd.smdkv210.rc:root/ueventd.smdkv210.rc
+
+# recovery kernel
+#PRODUCT_COPY_FILES += \
+    device/samsung/smdkv210/recovery.bin:recovery.bin
+
+PRODUCT_COPY_FILES += \
+    device/samsung/smdkv210/updater.sh:updater.sh
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES += \
@@ -92,18 +97,18 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
         athwlan.bin.z77 \
         data.patch.hw2_0.bin \
-        calData_ar6102_15dBm.bin \
-        recEvent \
-        wmiconfig 
+        calData_ar6102_15dBm.bin
+#        recEvent \
+#        wmiconfig 
 #        abtfilt
 
 # MFC Firmware
 PRODUCT_COPY_FILES += \
-        device/samsung/smdkv210/proprietary/firmware/samsung_mfc_fw.bin:system/vendor/firmware/samsung_mfc_fw.bin
+        vendor/samsung/smdkv210/proprietary/system/vendor/firmware/samsung_mfc_fw.bin:system/vendor/firmware/samsung_mfc_fw.bin
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml \
+	frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml \
 	frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
 	frameworks/native/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
 	frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
@@ -124,30 +129,24 @@ PRODUCT_COPY_FILES += \
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
-	e2fsck \
-	make_ext4fs
-
-# Test utilites
-PRODUCT_PACKAGES += \
-	audiotest \
-	evtest \
-	lcd_info
+	make_ext4fs \
+    setup_fs
 
 # PowerVR libs
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/proprietary/vendor/bin/pvrsrvinit:system/vendor/bin/pvrsrvinit \
-	device/samsung/smdkv210/proprietary/vendor/lib/libpvrANDROID_WSEGL.so:system/vendor/lib/libpvrANDROID_WSEGL.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/libPVRScopeServices.so:system/vendor/lib/libPVRScopeServices.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/libpvr2d.so:system/vendor/lib/libpvr2d.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/libsrv_init.so:system/vendor/lib/libsrv_init.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/libglslcompiler.so:system/vendor/lib/libglslcompiler.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/libusc.so:system/vendor/lib/libusc.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/libsrv_um.so:system/vendor/lib/libsrv_um.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/libIMGegl.so:system/vendor/lib/libIMGegl.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so:system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so:system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
-	device/samsung/smdkv210/proprietary/vendor/lib/hw/gralloc.s5pc110.so:system/vendor/lib/hw/gralloc.s5pc110.so
+	vendor/samsung/smdkv210/proprietary/system/vendor/bin/pvrsrvinit:system/vendor/bin/pvrsrvinit \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/libpvrANDROID_WSEGL.so:system/vendor/lib/libpvrANDROID_WSEGL.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/libPVRScopeServices.so:system/vendor/lib/libPVRScopeServices.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/libpvr2d.so:system/vendor/lib/libpvr2d.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/libsrv_init.so:system/vendor/lib/libsrv_init.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/libglslcompiler.so:system/vendor/lib/libglslcompiler.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/libusc.so:system/vendor/lib/libusc.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/libsrv_um.so:system/vendor/lib/libsrv_um.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/libIMGegl.so:system/vendor/lib/libIMGegl.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so:system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so:system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
+	vendor/samsung/smdkv210/proprietary/system/vendor/lib/hw/gralloc.s5pc110.so:system/vendor/lib/hw/gralloc.s5pc110.so
 
 # Lights
 PRODUCT_PACKAGES += \
@@ -176,9 +175,10 @@ PRODUCT_COPY_FILES += \
 
 # These are the OpenMAX IL configuration files
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/codecs/secomxregistry:system/etc/secomxregistry \
+	hardware/samsung/exynos3/s5pc110/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry \
 	device/samsung/smdkv210/codecs/media_profiles.xml:system/etc/media_profiles.xml \
 	device/samsung/smdkv210/codecs/media_codecs.xml:system/etc/media_codecs.xml
+#	device/samsung/smdkv210/codecs/secomxregistry:system/etc/secomxregistry \
 
 # These are the OpenMAX IL modules
 PRODUCT_PACKAGES += \
@@ -200,27 +200,27 @@ PRODUCT_PACKAGES += \
 # Misc other modules
 PRODUCT_PACKAGES += \
 	hdmi.s5pc110 \
-	sensors.smdkv210
-#	power.s5pc110 \
+	sensors.smdkv210 \
+	power.s5pc110 
 
 # Preinstalled utility app(s).
-PRODUCT_PACKAGES += \
-	AdobeFlashPlayer \
-	ESFileExplorer \
-	ESTaskManager \
-	TerminalEmulator \
-	Superuser \
-	SuperSUNoNag
+#PRODUCT_PACKAGES += \
+#	AdobeFlashPlayer \
+#	ESFileExplorer \
+#	ESTaskManager \
+#	TerminalEmulator \
+#	Superuser \
+#	SuperSUNoNag
 
 # TerminalEmulator support library
-PRODUCT_COPY_FILES += \
-    device/samsung/smdkv210/proprietary/lib/libjackpal-androidterm4.so:system/lib/libjackpal-androidterm4.so
+#PRODUCT_COPY_FILES += \
+#    device/samsung/smdkv210/proprietary/lib/libjackpal-androidterm4.so:system/lib/libjackpal-androidterm4.so
 
 # External GPS Support
-PRODUCT_PACKAGES += \
-	UsbGPS4Droid \
-	GPSTest \
-	SerialPort 
+#PRODUCT_PACKAGES += \
+#	UsbGPS4Droid \
+#	GPSTest \
+#	SerialPort 
 
 # Busybox + scripts
 PRODUCT_COPY_FILES += \
@@ -258,41 +258,6 @@ PRODUCT_PACKAGES += \
 # Get the long list of APNs
 PRODUCT_COPY_FILES += device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
 
-# GNU Linux libs
-PRODUCT_COPY_FILES += \
-    device/samsung/smdkv210/proprietary/lib/generic/libgcc_s.so.1:system/lib/generic/libgcc_s.so.1 \
-    device/samsung/smdkv210/proprietary/lib/generic/libresolv-2.10.1.so:system/lib/generic/libresolv-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libc-2.10.1.so:system/lib/generic/libc-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libnss_nisplus-2.10.1.so:system/lib/generic/libnss_nisplus-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/librt-2.10.1.so:system/lib/generic/librt-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libnsl-2.10.1.so:system/lib/generic/libnsl-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libm-2.10.1.so:system/lib/generic/libm-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libutil-2.10.1.so:system/lib/generic/libutil-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libpcprofile.so:system/lib/generic/libpcprofile.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libmemusage.so:system/lib/generic/libmemusage.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libnss_hesiod-2.10.1.so:system/lib/generic/libnss_hesiod-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libBrokenLocale-2.10.1.so:system/lib/generic/libBrokenLocale-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libnss_nis-2.10.1.so:system/lib/generic/libnss_nis-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libSegFault.so:system/lib/generic/libSegFault.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libthread_db-1.0.so:system/lib/generic/libthread_db-1.0.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libnss_files-2.10.1.so:system/lib/generic/libnss_files-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libnss_compat-2.10.1.so:system/lib/generic/libnss_compat-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/ld-2.10.1.so:system/lib/generic/ld-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libcrypt-2.10.1.so:system/lib/generic/libcrypt-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libanl-2.10.1.so:system/lib/generic/libanl-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libcidn-2.10.1.so:system/lib/generic/libcidn-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libpthread-2.10.1.so:system/lib/generic/libpthread-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libnss_dns-2.10.1.so:system/lib/generic/libnss_dns-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libdl-2.10.1.so:system/lib/generic/libdl-2.10.1.so \
-    device/samsung/smdkv210/proprietary/lib/generic/libntfs-3g.so.83.0.0:system/lib/generic/libntfs-3g.so.83.0.0 \
-    device/samsung/smdkv210/proprietary/lib/generic/setup_genericlibs.sh:system/etc/setup_genericlibs.sh
-
-# ntfsprogs binaries
-PRODUCT_COPY_FILES += \
-    device/samsung/smdkv210/proprietary/bin/ntfs-3g:system/bin/ntfs-3g \
-    device/samsung/smdkv210/proprietary/bin/ntfsfix:system/bin/ntfsfix \
-    device/samsung/smdkv210/proprietary/bin/mkntfs:system/bin/mkntfs
-
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -321,6 +286,13 @@ include frameworks/native/build/tablet-dalvik-heap.mk
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mass_storage
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.hwui.disable_scissor_opt=true \
+	ro.config.low_ram=true \
+	ro.bq.gpu_to_cpu_unsupported=1 \
+	ro.zram.default=18 \
+	ro.ksm.default=1
 
 # Set product characteristic to tablet, needed for some ui elements
 PRODUCT_CHARACTERISTICS := tablet

@@ -76,11 +76,11 @@ on fs
     chown system system /sys/devices/platform/mid-control/otg_switch
 
 # Fake a carrier.
-    setprop gsm.sim.operator.numeric 310004
-    setprop gsm.sim.operator.alpha Verizon
-    setprop gsm.sim.operator.iso-country us
-    setprop gsm.operator.numeric 31000
-    setprop gsm.operator.alpha "Verizon Wireless"
+    setprop gsm.sim.operator.numeric 25002
+    setprop gsm.sim.operator.alpha Megafon
+    setprop gsm.sim.operator.iso-country ru
+    setprop gsm.operator.numeric 25002
+    setprop gsm.operator.alpha "Megafon"
 
 # Configure and enable KSM
     write /sys/kernel/mm/ksm/pages_to_scan 100

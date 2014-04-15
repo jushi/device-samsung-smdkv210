@@ -1,0 +1,104 @@
+import /init.recovery.${ro.hardware}.rc
+
+on early-init
+    start ueventd
+    start healthd
+
+on init
+    export PATH /sbin
+    export ANDROID_ROOT /system
+    export ANDROID_DATA /data
+    export ANDROID_CACHE /cache
+    export SECONDARY_STORAGE /extsd
+    export EXTERNAL_STORAGE /sdcard
+
+    symlink /system/etc /etc
+
+    mkdir /system
+    mkdir /data
+    mkdir /cache
+    mkdir /mnt
+    mkdir /mnt/media_rw
+    mount /tmp /tmp tmpfs
+
+    mkdir /storage 0751 root sdcard_r
+    mkdir /mnt/media_rw/sdcard0 0000 media_rw media_rw
+    mkdir /mnt/media_rw/sdcard1 0000 media_rw media_rw
+    mkdir /mnt/media_rw/udisk 0000 media_rw media_rw
+    mkdir /storage/sdcard0 0700 root root
+    mkdir /storage/sdcard1 0700 root root
+    mkdir /storage/udisk 0700 root root
+
+    symlink /storage/sdcard0 /extsd
+    symlink /storage/sdcard1 /sdcard
+    symlink /storage/udisk /udisk
+
+    chown root shell /tmp
+    chmod 0775 /tmp
+
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 18D1
+    write /sys/class/android_usb/android0/idProduct D001
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+
+
+on boot
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
+
+    # reduce backlight usage in recovery
+    write /sys/class/leds/lcd-backlight/brightness 50
+
+    ifup lo
+    hostname localhost
+    domainname localdomain
+
+    class_start default
+
+service ueventd /sbin/ueventd
+    critical
+
+service console /sbin/sh
+    console
+
+service healthd /sbin/healthd -n
+    critical
+
+service recovery /sbin/recovery
+
+service setup_adbd /sbin/setup_adbd
+    oneshot
+
+service adbd /sbin/adbd recovery
+    disabled
+
+service vold /sbin/minivold
+    socket vold stream 0660 root mount
+    ioprio be 2
+
+service fuse_sdcard0 /sbin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard0 /storage/sdcard0
+    class late_start
+
+service fuse_sdcard1 /sbin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+    class late_start
+    disabled
+
+# Recovery will start adb once it has checked the keys
+
+# Restart adbd so it can run as root
+on property:service.adb.root=1
+    write /sys/class/android_usb/android0/enable 0
+    restart adbd
+    write /sys/class/android_usb/android0/enable 1
+
+on property:sys.storage.ums_enabled=1
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions adb,mass_storage
+    write /sys/class/android_usb/android0/enable 1
+
+on property:sys.storage.ums_enabled=0
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/enable ${service.adb.root}

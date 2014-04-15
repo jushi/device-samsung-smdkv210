@@ -1,0 +1,12 @@
+#<src>					<mnt_point>	<type>	<mnt_flags and options>											<fs_mgr_flags>
+/dev/block/mmcblk0p4	/system		ext4	rw,noatime,barrier=0											wait
+/dev/block/mmcblk0p3	/data		ext4	noatime,nosuid,nodev,nomblk_io_submit,barrier=0                 wait
+/dev/block/mmcblk0p2	/cache		ext4	noatime,nosuid,nodev,nomblk_io_submit,barrier=0                 wait
+
+/devices/platform/s3c-sdhci.0/mmc_host/mmc0 		/storage/sdcard0    vfat      defaults    voldmanaged=sdcard0:1,nonremovable
+/devices/platform/s3c-sdhci.2/mmc_host/mmc2 		/storage/sdcard1    vfat      defaults    voldmanaged=sdcard1:auto
+/devices/platform/s5p-ehci/usb1 			/storage/udisk	    vfat      defaults    voldmanaged=udisk:auto
+
+recovery				/recovery	mtd		defaults														defaults
+boot					/boot		mtd		defaults														defaults
+
