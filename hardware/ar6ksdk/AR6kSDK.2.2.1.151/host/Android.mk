@@ -36,14 +36,15 @@ ATH_TARGET_OUTPUT:=$(ATH_ANDROID_ROOT)
 STRIP :=$(ATH_CROSS_COMPILE_TYPE)strip
 
 # [WIFI] Wi-Fi Support ++
-ifeq ($(TARGET_PRODUCT),$(filter $(TARGET_PRODUCT),qsd8250_surf qsd8250_ffa msm7627_surf msm7627_ffa msm7625_ffa msm7625_surf msm7625_qrd msm7630_surf))
+ifeq ($(TARGET_PRODUCT),$(filter $(TARGET_PRODUCT),qsd8250_surf qsd8250_ffa msm7627_surf msm7627_ffa msm7625_ffa msm7625_surf msm7625_qrd msm7630_surf smdkc100 smdkv210))
 #ifeq ($(TARGET_PRODUCT),$(filter $(TARGET_PRODUCT),qsd8250_surf qsd8250_ffa msm7627_surf msm7627_ffa msm7625_ffa msm7625_surf msm7630_surf))
 # [WIFI] Wi-Fi Support --
 export  ATH_LINUXPATH=$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ
 else
 # Comment out the following variable for your platform 
 # Link your kernel into android SDK directory as 'kernel' directory
-export  ATH_LINUXPATH=$(ATH_ANDROID_ROOT)/kernel
+#export  ATH_LINUXPATH=$(ATH_ANDROID_ROOT)/kernel
+export  ATH_LINUXPATH=$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ
 endif 
 export  ATH_ARCH_CPU_TYPE=arm
 export  ATH_BUS_SUBTYPE=linux_sdio
@@ -95,8 +96,10 @@ $(mod_file) : $(mod_cleanup) $(TARGET_PREBUILT_KERNEL) $(ACP)
 	$(STRIP) --strip-debug $(ATH_TARGET_OUTPUT)/$(ATH_ANDROID_SRC_BASE)/host/os/linux/ar6000.ko
 	$(ACP) $(ATH_TARGET_OUTPUT)/$(ATH_ANDROID_SRC_BASE)/host/os/linux/ar6000.ko $(TARGET_OUT)/lib/modules
 
-ALL_PREBUILT += $(mod_file)
+CUSTOM_MODULES += $(mod_file)
+#PRODUCT_COPY_FILES += \
+#    $(ATH_TARGET_OUTPUT)/$(ATH_ANDROID_SRC_BASE)/host/os/linux/ar6000.ko:$(TARGET_OUT)/lib/modules
 
-include $(LOCAL_PATH)/tools/Android.mk
+#include $(LOCAL_PATH)/tools/Android.mk
 
 endif

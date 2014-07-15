@@ -31,8 +31,8 @@ PRODUCT_LOCALES += hdpi
 PRODUCT_PROPERTY_OVERRIDES := \
 	ro.sf.lcd_density=120
 
-PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/media/bootanimation.zip:system/media/bootanimation.zip
+#PRODUCT_COPY_FILES += \
+#	device/samsung/smdkv210/media/bootanimation.zip:system/media/bootanimation.zip
 
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
@@ -62,10 +62,10 @@ PRODUCT_COPY_FILES += \
 
 # recovery kernel
 #PRODUCT_COPY_FILES += \
-    device/samsung/smdkv210/recovery.bin:recovery.bin
+#    device/samsung/smdkv210/recovery.bin:recovery.bin
 
-PRODUCT_COPY_FILES += \
-    device/samsung/smdkv210/updater.sh:updater.sh
+#PRODUCT_COPY_FILES += \
+#    device/samsung/smdkv210/updater.sh:updater.sh
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES += \
@@ -93,6 +93,13 @@ PRODUCT_COPY_FILES += \
 	device/samsung/smdkv210/config/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
 	device/samsung/smdkv210/config/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
 	device/samsung/smdkv210/config/hostapd.conf:system/etc/wifi/hostapd.conf
+#    device/samsung/smdkv210/hardware/wlan/data.patch.hw2_0.bin:system/lib/hw/wlan/data.patch.hw2_0.bin \
+#    device/samsung/smdkv210/hardware/wlan/athwlan.bin.z77:system/lib/hw/wlan/athwlan.bin.z77 \
+#    device/samsung/smdkv210/hardware/wlan/calData_ar6102_15dBm.bin:system/lib/hw/wlan/calData_ar6102_15dBm.bin \
+#    device/samsung/smdkv210/hardware/wlan/athtcmd_ram.bin:system/lib/hw/wlan/athtcmd_ram.bin \
+#    device/samsung/smdkv210/hardware/wlan/device.bin:system/lib/hw/wlan/device.bin \
+#    device/samsung/smdkv210/hardware/wlan/eeprom.bin:system/lib/hw/wlan/eeprom.bin \
+#    device/samsung/smdkv210/hardware/wlan/eeprom.data:system/lib/hw/wlan/eeprom.data
 
 PRODUCT_PACKAGES += \
         athwlan.bin.z77 \
@@ -124,8 +131,8 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.touchscreen.xml:system/etc/permissions/android.hardware.touchscreen.xml \
 	frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
 	frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
-	frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
-	packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml
+	frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml
+#	packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -224,14 +231,15 @@ PRODUCT_PACKAGES += \
 
 # Busybox + scripts
 PRODUCT_COPY_FILES += \
-	device/samsung/smdkv210/rooting/bin/su:system/bin/su \
-	device/samsung/smdkv210/rooting/bin/su:system/xbin/su \
-	device/samsung/smdkv210/rooting/xbin/busybox:system/xbin/busybox \
 	device/samsung/smdkv210/rooting/etc/insmod.sh:system/etc/insmod.sh \
 	device/samsung/smdkv210/rooting/etc/check_property.sh:system/etc/check_property.sh \
 	device/samsung/smdkv210/rooting/etc/install_busybox.sh:system/etc/install_busybox.sh \
 	device/samsung/smdkv210/rooting/etc/initial_setup.sh:system/etc/initial_setup.sh \
 	device/samsung/smdkv210/rooting/etc/init.d/99SuperSUDaemon:system/etc/init.d/99SuperSUDaemon
+
+#	device/samsung/smdkv210/rooting/bin/su:system/bin/su \
+#	device/samsung/smdkv210/rooting/bin/su:system/xbin/su \
+#	device/samsung/smdkv210/rooting/xbin/busybox:system/xbin/busybox \
 
 # Additional GoogleApps built from source
 PRODUCT_PACKAGES += \
@@ -239,15 +247,15 @@ PRODUCT_PACKAGES += \
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
-        LiveWallpapers \
-        LiveWallpapersPicker \
-        VisualizationWallpapers \
+	LiveWallpapers \
+	LiveWallpapersPicker \
+	VisualizationWallpapers \
 	Galaxy4 \
 	HoloSpiralWallpaper \
 	MagicSmokeWallpapers \
 	NoiseField \
 	PhaseBeam \
-        librs_jni
+	librs_jni
 
 # Screensavers
 PRODUCT_PACKAGES += \

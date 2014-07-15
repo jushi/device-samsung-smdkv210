@@ -4,8 +4,8 @@
 /dev/block/mmcblk0p2	/cache		ext4	noatime,nosuid,nodev,nomblk_io_submit,barrier=0                 wait
 
 /devices/platform/s3c-sdhci.0/mmc_host/mmc0 		/storage/sdcard0    vfat      defaults    voldmanaged=sdcard0:1,nonremovable
-/devices/platform/s3c-sdhci.2/mmc_host/mmc2 		/storage/sdcard1    vfat      defaults    voldmanaged=sdcard1:auto
-/devices/platform/s5p-ehci/usb1 			/storage/udisk	    vfat      defaults    voldmanaged=udisk:auto
+/devices/platform/s3c-sdhci.2/mmc_host/mmc2 		/storage/sdcard1    vfat      defaults    voldmanaged=sdcard1:auto,noemulatedsd
+/devices/platform/s5p-ehci/usb1 			/storage/udisk	    vfat      defaults    voldmanaged=udisk:auto,noemulatedsd
 
 recovery				/recovery	mtd		defaults														defaults
 boot					/boot		mtd		defaults														defaults

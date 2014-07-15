@@ -22,9 +22,9 @@ on init
     mount /tmp /tmp tmpfs
 
     mkdir /storage 0751 root sdcard_r
-    mkdir /mnt/media_rw/sdcard0 0000 media_rw media_rw
-    mkdir /mnt/media_rw/sdcard1 0000 media_rw media_rw
-    mkdir /mnt/media_rw/udisk 0000 media_rw media_rw
+#    mkdir /mnt/media_rw/sdcard0 0700 media_rw media_rw
+#    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+#    mkdir /mnt/media_rw/udisk 0700 media_rw media_rw
     mkdir /storage/sdcard0 0700 root root
     mkdir /storage/sdcard1 0700 root root
     mkdir /storage/udisk 0700 root root
@@ -78,12 +78,12 @@ service vold /sbin/minivold
     socket vold stream 0660 root mount
     ioprio be 2
 
-service fuse_sdcard0 /sbin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard0 /storage/sdcard0
-    class late_start
+#service fuse_sdcard0 /sbin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard0 /storage/sdcard0
+#    class late_start
 
-service fuse_sdcard1 /sbin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
-    class late_start
-    disabled
+#service fuse_sdcard1 /sbin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+#    class late_start
+#    disabled
 
 # Recovery will start adb once it has checked the keys
 
